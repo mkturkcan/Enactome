@@ -1,0 +1,15 @@
+{
+  "name": "enactome",
+  "version": "0.4.0",
+  "description": "Enactome — connectome-constrained circuit analysis for Drosophila",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev"
+  },
+  "devDependencies": {
+    "electron": "^30.0.0"
+  },
+  "author": "",
+  "license": "MIT"
+}

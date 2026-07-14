@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Enactome — Drosophila Circuit Studio</title>
+<link rel="stylesheet" href="studio.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- top bar -->
+  <header id="topbar">
+    <div class="brand">ENACT<span>OME</span></div>
+    <div class="crumbs">Drosophila connectome studio · <span id="datasetName">BANC</span></div>
+    <nav class="modes">
+      <button class="mode active" data-mode="circuit">Circuit</button>
+      <button class="mode" data-mode="simulate">Simulate</button>
+      <button class="mode" data-mode="atlas">Disease Atlas</button>
+    </nav>
+    <div class="status"><span id="engineDot" class="dot off"></span><span id="engineTxt">engine…</span></div>
+  </header>
+
+  <!-- left rail -->
+  <aside id="leftrail">
+    <div class="tabs">
+      <button class="tab active" data-tab="load">Load</button>
+      <button class="tab" data-tab="build">Build</button>
+      <button class="tab" data-tab="params">Parameters</button>
+      <button class="tab" data-tab="experiments">Experiments</button>
+      <button class="tab" data-tab="data">Data</button>
+    </div>
+
+    <section class="panel" data-panel="load">
+      <h3>Connectome</h3>
+      <p class="muted" id="loadStatus">No connectome loaded.</p>
+      <button class="primary" id="btnLoad">Load BANC connectome</button>
+      <h3>Circuit presets</h3>
+      <ul class="presetlist" id="presetList">
+        <li data-preset="olfactory">Olfactory pathway (AL→LH / MB)</li>
+        <li data-preset="mb">Mushroom body (learning)</li>
+        <li data-preset="cx">Central complex (heading)</li>
+        <li data-preset="flybrain">Canonical fly brain</li>
+      </ul>
+    </section>
+
+    <section class="panel hidden" data-panel="build">
+      <h3>Neuron model</h3>
+      <label>Model tier</label>
+      <select id="selModel">
+        <option value="rate">Rate (dynamical + neuromodulation)</option>
+        <option value="lif">LIF / IAF (fly-calibrated)</option>
+        <option value="hh">Hodgkin-Huxley (biophysical)</option>
+      </select>
+      <label>Compute backend</label>
+      <select id="selBackend">
+        <option value="cpu">CPU (numpy)</option>
+        <option value="gpu">GPU (torch/CUDA)</option>
+      </select>
+      <div id="modelParams"></div>
+    </section>
+
+    <section class="panel hidden" data-panel="params">
+      <h3>Neuromodulation</h3>
+      <div class="slider"><label>Dopamine <span id="vDA">0.0</span></label><input type="range" id="mDA" min="0" max="1" step="0.05" value="0"></div>
+      <div class="slider"><label>Octopamine <span id="vOA">0.0</span></label><input type="range" id="mOA" min="0" max="1" step="0.05" value="0"></div>
+      <div class="slider"><label>Serotonin <span id="v5HT">0.0</span></label><input type="range" id="m5HT" min="0" max="1" step="0.05" value="0"></div>
+      <div class="slider"><label>Acetylcholine (mod) <span id="vACh">0.0</span></label><input type="range" id="mACh" min="0" max="1" step="0.05" value="0"></div>
+      <p class="muted">Modulators reconfigure the transfer function (gain/bias) of receptor-bearing neurons in the rate model.</p>
+    </section>
+
+    <section class="panel hidden" data-panel="experiments">
+      <h3>Experiment registry</h3>
+      <p class="muted" id="expSummary">Recreate a published finding from the connectome or a shipped bundle.</p>
+      <button class="primary" id="btnRunAll">Run all experiments</button>
+      <input id="expFilter" placeholder="filter by name or paper" style="margin-top:8px">
+      <ul class="presetlist" id="expList"></ul>
+    </section>
+
+    <section class="panel hidden" data-panel="data">
+      <h3>Data screens</h3>
+      <label>Census group</label>
+      <select id="selCensus"><option value="Class">Class</option><option value="Nt">Neurotransmitter</option></select>
+      <button class="primary" id="btnCensus">Run census</button>
+      <div id="censusOut"></div>
+      <h3 style="margin-top:14px">Disease enrichment</h3>
+      <p class="muted">Size-controlled disease-ortholog enrichment across neuron classes.</p>
+      <button class="primary" id="btnDisease">Run disease atlas</button>
+      <div id="diseaseOut"></div>
+    </section>
+  </aside>
+
+  <!-- center canvas -->
+  <main id="canvas">
+    <div id="canvasHead">
+      <span id="canvasTitle">Circuit: Olfactory pathway</span>
+      <span class="legend" id="ntLegend"></span>
+    </div>
+    <svg id="circuitSvg"></svg>
+    <div id="canvasHint" class="hint">Load the connectome, then pick a preset to lay out its circuit.</div>
+  </main>
+
+  <!-- right rail -->
+  <aside id="rightrail">
+    <div class="tabs">
+      <button class="tab active" data-otab="outputs">Outputs</button>
+      <button class="tab" data-otab="perturb">Perturb</button>
+      <button class="tab" data-otab="node">Selection</button>
+    </div>
+    <section class="panel" data-opanel="outputs">
+      <h3>Live outputs</h3>
+      <button class="primary" id="btnRun">Run simulation</button>
+      <div id="outPlots"></div>
+    </section>
+    <section class="panel hidden" data-opanel="perturb">
+      <h3>Optogenetic / silencing</h3>
+      <label>Target cell type</label>
+      <select id="selPerturbTarget"></select>
+      <label>Mode</label>
+      <select id="selPerturbMode"><option value="activate">Activate (CsChrimson)</option><option value="silence">Silence (Kir2.1)</option></select>
+      <button class="primary" id="btnPerturb">Predict hypothesis</button>
+      <div id="perturbOut"></div>
+    </section>
+    <section class="panel hidden" data-opanel="node">
+      <h3>Selection</h3>
+      <div id="nodeInfo" class="muted">Click a circuit node to inspect it.</div>
+    </section>
+  </aside>
+
+  <!-- bottom tray -->
+  <footer id="tray">
+    <div class="traytab active" data-tray="drugs">Drugs / modulators</div>
+    <div class="traytab" data-tray="stimuli">Stimuli</div>
+    <div class="traytab" data-tray="devices">Experiments</div>
+    <div class="trayitems" id="trayItems"></div>
+  </footer>
+
+</div>
+<script src="studio.js"></script>
+</body>
+</html>

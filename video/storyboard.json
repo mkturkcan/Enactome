@@ -1,0 +1,42 @@
+{
+  "meta": {
+    "title": "Enactome",
+    "subtitle": "A connectome-constrained simulation of the Drosophila brain",
+    "fps": 30,
+    "width": 1280,
+    "height": 800,
+    "server_port": 8799
+  },
+  "scenes": [
+    {"id": "title", "kind": "card", "dur": 7,
+     "heading": "ENACTOME",
+     "sub": "Turning the fly brain wiring diagram into a working simulation",
+     "caption": "The fruit fly Drosophila has about 140,000 neurons. Every connection between them has now been mapped."},
+    {"id": "premise", "kind": "card", "dur": 8,
+     "heading": "The connectome",
+     "sub": "158,262 neurons and 3,990,039 synapses (the BANC dataset)",
+     "caption": "A connectome is the full wiring diagram of a brain. On its own it is a static map. Enactome turns it into a model that computes."},
+    {"id": "load", "kind": "ui", "action": "load", "dur": 9,
+     "caption": "We load the connectome into the engine. Each synapse is given a sign from its neurotransmitter: excitatory or inhibitory."},
+    {"id": "circuit", "kind": "ui", "action": "circuit_olfactory", "dur": 9,
+     "caption": "The olfactory pathway: odor receptors to projection neurons to the lateral horn, the circuit for innate smell-driven behavior."},
+    {"id": "experiments", "kind": "ui", "action": "run_all", "dur": 14,
+     "caption": "The registry runs 35 experiments, each recreating a published finding from the connectome. All pass."},
+    {"id": "lh", "kind": "ui", "action": "show_lh", "dur": 10,
+     "caption": "The lateral horn compresses the odor code and is biased toward aversion: aversive output neurons outnumber appetitive ones."},
+    {"id": "disease", "kind": "ui", "action": "disease", "dur": 11,
+     "caption": "A gene-to-cell-type layer links circuits to human disease. Fly orthologs of epilepsy and Parkinson genes are enriched in neurons."},
+    {"id": "perturb", "kind": "ui", "action": "perturb", "dur": 10,
+     "caption": "The perturbation engine predicts the behavioral effect of silencing a neuron type, and names the genetic driver to test it."},
+    {"id": "paper_intro", "kind": "card", "dur": 5,
+     "heading": "The paper",
+     "sub": "Every result, written up",
+     "caption": "Each result is a figure in the manuscript."},
+    {"id": "paper_scroll", "kind": "paper", "dur": 22,
+     "caption": "The manuscript: the platform, the lateral horn, learning and neuromodulation, whole-brain integration, the visual system, and disease genetics."},
+    {"id": "outro", "kind": "card", "dur": 6,
+     "heading": "ENACTOME",
+     "sub": "One connectome. Thirty-five reproducible experiments. From wiring to computation.",
+     "caption": ""}
+  ]
+}
