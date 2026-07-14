@@ -1,6 +1,28 @@
+<div align="center">
+
 # Enactome
 
 **A connectome-constrained brain simulation platform — a desktop analysis app and an LLM-callable engine, from one codebase.**
+
+📄 **[Read the paper (PDF)](paper/enactome_manuscript.pdf)** &nbsp;·&nbsp; 🎥 **[Watch the demo (YouTube)](https://youtu.be/zfk_Hc98qlk)**
+
+</div>
+
+## Quick start (dev)
+
+```bash
+# 1. engine
+pip install -e .[server]
+uvicorn server.app:app --port 8765
+
+# 2. desktop app (separate terminal)
+cd electron && npm install && npm start
+```
+
+The Electron `main.js` also auto-starts the engine, so `npm start` alone works once
+`enactome-core` is installed in the active Python.
+
+## What it is
 
 Enactome turns a synapse-resolution connectome into fast, testable circuit models and a
 circuit→gene→disease atlas. It is organism-general by design: any signed synaptic wiring diagram
@@ -61,19 +83,6 @@ paper-recreation experiment registry, and a circuit-to-disease atlas, on a gener
 The GUI and an LLM are just two clients of the same local HTTP engine. There is **no
 duplicated science**: a new analysis is added once in `enactome_core`, exposed once in
 `server/app.py`, and it appears in both the GUI and the `/tools` manifest.
-
-## Run it (dev)
-
-```bash
-# 1. engine
-pip install -e .[server]
-uvicorn server.app:app --port 8765
-
-# 2. desktop app (separate terminal)
-cd electron && npm install && npm start
-```
-The Electron `main.js` also auto-starts the engine, so `npm start` alone works once
-`enactome-core` is installed in the active Python.
 
 ## LLM usage
 ```
