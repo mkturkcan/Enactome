@@ -2,7 +2,7 @@
 
 # Enactome
 
-**A connectome-constrained brain simulation platform — a desktop analysis app and an LLM-callable engine, from one codebase.**
+**A connectome-constrained brain simulation platform: a desktop analysis app and an LLM-callable engine, from one codebase.**
 
 📄 **[Read the paper (PDF)](paper/enactome_manuscript.pdf)** &nbsp;·&nbsp; 🎥 **[Watch the demo (YouTube)](https://youtu.be/zfk_Hc98qlk)**
 
